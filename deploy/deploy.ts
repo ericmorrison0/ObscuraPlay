@@ -3,15 +3,20 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await hre.getNamedAccounts();
+  if (!deployer) {
+    throw new Error(
+      "Missing deployer account. Set process.env.PRIVATE_KEY in .env to a funded Sepolia private key (0x...).",
+    );
+  }
   const { deploy } = hre.deployments;
 
-  const deployedFHECounter = await deploy("FHECounter", {
+  const deployedObscuraPlay = await deploy("ObscuraPlay", {
     from: deployer,
     log: true,
   });
 
-  console.log(`FHECounter contract: `, deployedFHECounter.address);
+  console.log(`ObscuraPlay contract: `, deployedObscuraPlay.address);
 };
 export default func;
-func.id = "deploy_fheCounter"; // id required to prevent reexecution
-func.tags = ["FHECounter"];
+func.id = "deploy_obscuraPlay"; // id required to prevent reexecution
+func.tags = ["ObscuraPlay"];
